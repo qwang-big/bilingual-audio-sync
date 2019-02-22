@@ -1,0 +1,78 @@
+body
+{
+	padding: 0px;
+	margin: 0px;
+	font-size: 16px;
+	color: #555;
+	line-height: 24px;
+	font-family: times,serif;
+
+}
+
+#audio{display: none;}
+
+div#stop{padding: 2px 6px 2px 6px;background-color: #333;color:#fff;font-size: .7em;font-family: arial,sans-serif;float:left;margin-right:15px;-moz-border-radius: 5px;
+border-radius: 5px;cursor: pointer;}
+small{font-size:.9em;}
+
+td.spk
+{
+	text-align: right;
+	margin-right: 10px;
+	padding: 9px 10px 9px 0px;
+}
+
+a:hover.tx_trg.students,a.tx_trg.students
+{
+	color: #070;
+	text-decoration: underline;
+}
+
+a:hover.tx_trg.student,a.tx_trg.student
+{
+	background: yellow;
+	outline: solid 2px yellow;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+a:hover.tx_trg.faulkner,a.tx_trg.faulkner
+{
+	background: yellow;
+	outline: solid 2px yellow;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#content
+{
+	overflow: hidden;
+	width: 550px;
+}
+
+audio { margin: 15px 0; }
+
+#progressContainer
+{
+	position: relative;
+	display: block;
+	height: 20px;
+	background-color: #eee;
+	width: 500px;
+	border: 1px solid gray;
+	margin-top: 5px;
+}
+
+#progress
+{
+	display: block;
+	height: 20px;
+	background-color: #99f;
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div.body_text a { cursor: pointer; }
+div.body_text a:hover { color: #666; }
+div.body_text a.aor { color: #000; }
+div.body_text a.bor { color: #999; }

@@ -1,0 +1,48 @@
+<html><head>
+  <title>JavaScript Audio Sync With Text</title>
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="JavaScript Audio Sync With Text - Demo">
+  <style>
+    body{background:#000;font-family:'Lato',sans-serif;font-size:1.5em;line-height:1.1em;letter-spacing:.05em;margin:0}header, div.headerclone {background:#46ABB6;padding:20px 0}h1.heading{line-height:1.1em;text-align:center;font-weight:400;font-size:1.7em;color:#EDF7F2}div.naturallanguageform{width:900px;margin:2% auto;max-width:95%;min-height:400px;border-radius:5px;color:#FFF;font-size:1.5em}div.nlfinner{width:96%;padding:2%}p.line{line-height:1.5em;font-weight:300}input.textinput{background:none;border:0;border-bottom:1px dashed #EEE;width:auto;font-size:1em;color:#B5E655;font:inherit}input.textinput:focus{outline:none;border-bottom:1px dashed #D00}::-webkit-input-placeholder{color:#B5E655;font-weight:300}:-moz-placeholder{color:#B5E655;opacity:1}::-moz-placeholder{color:#B5E655;opacity:1}:-ms-input-placeholder{color:#B5E655}select.dropdown{font-size:1em;color:#B5E655;border:none;border-bottom:1px dashed #EFEFEF;-webkit-appearance:none;-moz-appearance:none;background:none;width:auto;text-indent:.01px;box-shadow:none;font:inherit}select.dropdown:focus{outline:none;border-bottom:1px dashed #D00}button.button{background:#388891;border:none;padding:10px 50px;font-size:1em;color:#FFF;display:block;margin:40px auto 0;cursor:pointer;font:inherit} .subs span { color: #FFF; background-color: #000; font-style: normal;} p{font-style: italic;}
+  </style>
+</head>
+<body>
+  <div class="naturallanguageform">
+    <div class="nlfinner">
+      <p class="line">
+        <audio style="width:100%;" src="a2.mp3" id="audiofile2" controls preload="auto" autobuffer></audio>
+      </p>
+      <p class="line subs" id="subtitles2"></p>
+    </div>
+  </div>
+  <script src="a2.js" charset="utf-8"></script>
+  <script>
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+var subtitles   = document.getElementById("subtitles2");
+var audioPlayer = document.getElementById("audiofile2");
+    audioPlayer.addEventListener("timeupdate", function(e){
+        syncData.forEach(async function(d, i){
+            var el;
+            if( (audioPlayer.currentTime*1000) > d.start && (audioPlayer.currentTime*1000) <= d.end ) {
+
+                while(subtitles.hasChildNodes())
+                    subtitles.removeChild(subtitles.firstChild)
+
+                el = document.createElement('span');
+                el.setAttribute("id", "c_" + i);
+                el.innerText = syncData[i].de;
+                subtitles.appendChild(el);
+                el = document.createElement('p');
+                el.innerText = syncData[i].en;
+                subtitles.appendChild(el);
+                await sleep(500);
+            }
+        });
+    });
+  </script>
+</body>
+</html>

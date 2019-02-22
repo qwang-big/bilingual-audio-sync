@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>html5 text demo</title>
+	<link href="./css/reset.css" rel="stylesheet" type="text/css" />
+	<link href="./css/audio.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="content">
+	<div id="player">
+<div id="stop">PAUSE</div>
+<small><i>Click in the disscussion to listen or in the bar to cue.</i></small><div style="clear:both;"></div>
+<span id="progressContainer">
+<span id="progress"></span>
+</span>
+
+<div class="body_text"><a class="tx_trg" pers="#fff" tmloc="0.0"></a>
+
+<a class="tx_trg" pers="student" tmloc="0">Ab morgen muss ich wieder arbeiten.</a><br>
+<a class="tx_trg" pers="student" tmloc="2.832">Heute kann ich nicht kommen, aber morgen habe ich Zeit.</a><br>
+<a class="tx_trg" pers="student" tmloc="6.864">Wir haben nur eine kleine Wohnung, sind aber damit zufrieden.</a><br>
+<a class="tx_trg" pers="student" tmloc="11.232">Es war sehr schön.</a><br>
+<a class="tx_trg" pers="student" tmloc="12.768">Jetzt muss ich aber gehen.</a><br>
+<a class="tx_trg" pers="student" tmloc="14.808">Das ist aber nett von dir.</a><br>
+<a class="tx_trg" pers="student" tmloc="17.112">Ich muss meinen Schlüssel an der Rezeption abgeben.</a><br>
+<a class="tx_trg" pers="student" tmloc="21.24">Wann kann ich die Sachen bei dir abholen? </a><br>
+<a class="tx_trg" pers="student" tmloc="24.312">Wir müssen noch meinen Bruder abholen.</a><br>
+<a class="tx_trg" pers="student" tmloc="27.192">Hast du die Tür abgeschlossen?</a><br>
+<a class="tx_trg" pers="student" tmloc="29.712">Ich schließe dieses Jahr mein Studium ab.</a><br>
+<a class="tx_trg" pers="student" tmloc="33.024">Achtung an Gleis drei: Die Türen schließen.</a><br>
+<a class="tx_trg" pers="student" tmloc="36.6">Der Zug fährt jetzt ab.</a><br>
+<a class="tx_trg" pers="student" tmloc="38.76">Achtung! </a><br>
+<a class="tx_trg" pers="student" tmloc="39.672">Pass auf! </a><br>
+<a class="tx_trg" pers="student" tmloc="40.872">Der Verkehr ist hier gefährlich.</a>
+
+</div>
+</div>
+	</div>
+	
+	<audio id="audio" controls preload="auto" autobuffer> 
+  <!--source src="d.wav" type="audio/x-wav" /-->
+  <source src="a2.mp3" type="audio/mpeg" />
+
+</audio>
+
+<script src="js/jquery.js"></script>
+<script language="javascript">
+$(document).ready(function() {
+var audiobj = document.getElementById('audio');
+
+var adjscs = 0;var sntx = [];
+var pers = [];var alst=[];var gg;
+var offs='faulkner student students';
+
+$('a').each(function(index) {
+	gg = parseFloat($(this).attr('tmloc'));
+	sntx.push(gg);
+	pers.push($(this).attr('pers'));
+	alst.push($(this));
+});
+
+$('.tx_trg').click(function() {
+	var indx = $("a.tx_trg").index(this) + 0;
+	audiobj.currentTime = sntx[indx];
+	$(this).addClass($(this).attr('pers'));
+	audiobj.play();
+})
+
+$('#play').click(function() {
+	$('a.tx_trg').removeClass(offs);
+	audiobj.play();
+});
+
+$('#pause').click(function() {audiobj.pause();});
+$('#stop').click(function() {audiobj.pause();});
+
+$('#progressContainer').click(function(e) {
+	var wd = $('#progressContainer').width();
+	var length = audiobj.duration;
+	var x = e.pageX - this.offsetLeft;
+	$('a.tx_trg').removeClass(offs);
+	audiobj.currentTime = ((x / wd) * length) + .1;
+});
+
+
+audiobj.addEventListener('ended',function() {
+	audiobj.pause();
+	audiobj.currentTime = 0;},false);
+
+audiobj.addEventListener('timeupdate',function() {
+	var length = audiobj.duration;
+	var secs = audiobj.currentTime;
+	var progress = (secs / length) * 100;
+	$('#progress').css({'width': progress * 5});
+	myck_alt(secs);},false);
+
+function myck_alt(t){
+	$.each(alst, function(i, obj){
+		var tml=parseFloat(obj.attr('tmloc'));
+			if(tml>(t-adjscs)){
+				var lst=i-1;
+				var sz =alst[lst];
+				if(sz!=undefined){
+				var csz = alst[lst].attr('pers');
+				$('a.tx_trg').removeClass(offs);
+				$(sz).addClass(csz);
+				return false;
+			}}
+	    })
+}
+
+	
+});
+</script>
+</body>
+</html>
+
