@@ -1,6 +1,5 @@
 <html><head>
-  <title>JavaScript Audio Sync With Text</title>
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css">
+  <title>German A2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta name="description" content="JavaScript Audio Sync With Text - Demo">
   <style>
@@ -11,7 +10,8 @@
   <div class="naturallanguageform">
     <div class="nlfinner">
       <p class="line">
-        <audio style="width:100%;" src="a2.mp3" id="audiofile2" controls preload="auto" autobuffer></audio>
+        <audio style="width:80%;" src="a2.mp3" id="audiofile2" controls preload="auto" autobuffer></audio>
+        <a href="javascript:void(0)" title="repeat" id="b_repeat" onclick="return repx()"><br></a>
       </p>
       <p class="line subs" id="subtitles2"></p>
     </div>
@@ -21,25 +21,53 @@
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+function initr(n) {
+  syncData.forEach(function(d, i){d.re=n})
+}
+function s(d,a,v) {
+  d.setAttributeNS(null, a, v);
+}
+function repx() {
+  rep=!rep;
+  initr(rep?1:0);
+  var repeater = document.getElementById("b_repeat");
+  repeater.removeChild(repeater.firstChild);
+  var xmlns = "http://www.w3.org/2000/svg";
+  var img = document.createElementNS(xmlns, "svg");
+  s(img,"width",48);
+  s(img,"height",48);
+  s(img,"fill-rule","evenodd");
+  s(img,"clip-rule","evenodd");
+  var path = document.createElementNS(xmlns, "path");
+  s(path,"transform","scale(2,2)");
+  s(path,"fill","#FFF");
+  s(path,"d",rep?"M6 18h12c3.311 0 6-2.689 6-6s-2.689-6-6-6h-12.039c-3.293.021-5.961 2.701-5.961 6 0 3.311 2.688 6 6 6zm12-10c-2.208 0-4 1.792-4 4s1.792 4 4 4 4-1.792 4-4-1.792-4-4-4z":"M18 18h-12c-3.311 0-6-2.689-6-6s2.689-6 6-6h12.039c3.293.021 5.961 2.701 5.961 6 0 3.311-2.688 6-6 6zm0-10h-12c-2.208 0-4 1.792-4 4s1.792 4 4 4h12c2.208 0 4-1.792 4-4 0-2.199-1.778-3.986-3.974-4h-.026zm-12 1c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3z");
+  img.appendChild(path);
+  repeater.appendChild(img);
+}
+var rep = true;
+repx();
 var subtitles   = document.getElementById("subtitles2");
 var audioPlayer = document.getElementById("audiofile2");
     audioPlayer.addEventListener("timeupdate", function(e){
         syncData.forEach(async function(d, i){
             var el;
-            if( (audioPlayer.currentTime*1000) > d.start && (audioPlayer.currentTime*1000) <= d.end ) {
-
+            if( (audioPlayer.currentTime*1000) >= d.start && (audioPlayer.currentTime*1000) < d.end ) {
+                
                 while(subtitles.hasChildNodes())
                     subtitles.removeChild(subtitles.firstChild)
 
                 el = document.createElement('span');
-                el.setAttribute("id", "c_" + i);
                 el.innerText = syncData[i].de;
                 subtitles.appendChild(el);
                 el = document.createElement('p');
                 el.innerText = syncData[i].en;
                 subtitles.appendChild(el);
-                await sleep(500);
+                await sleep(d.end-d.start-150);
+                if (d.re > 0 && (audioPlayer.currentTime*1000) > d.end-200) {
+                    d.re -= 1;
+                    audioPlayer.currentTime = d.start/1000;
+                }
             }
         });
     });
